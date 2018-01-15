@@ -1,0 +1,266 @@
+<div class="container-fluid border border-dark">
+  <div class="row mt-5 mr-1 ml-1 ">
+    <div class="col-sm-7 border border-dark">
+      <fieldset class="scheduler-border">
+        <legend class="scheduler-border" style="color:#800080">Search</legend>
+
+      <!-- <h4 class="pt-1" style="color:#800080">Search</h4>
+      <hr class="border-dark"> -->
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <div class="row">
+            <div class="col-5 text-center">
+              <p class="pt-2 text-dark" for="exampleInputEmail1">Batch Number</p>
+            </div>
+            <div class="col-7 pr-0 pl-1">
+              <input type="text" class="form-control" placeholder="">
+            </div>
+          </div>
+ 
+        </div>
+ 
+      </div>
+      <div class="row mb-2">
+        <div class="col-sm-6">
+ 
+          <div class="row">
+            <div class="col-5 text-center">
+              <p class="pt-2" for="exampleInputEmail1">Source System</p>
+            </div>
+           
+            <div class="col-7 pr-0 pl-1">
+              <angular2-multiselect [data]="dropdownList" [(ngModel)]="selectedItems"
+    [settings]="dropdownSettings"
+    (onSelect)="onItemSelect($event)"
+    (onDeSelect)="OnItemDeSelect($event)"
+    (onSelectAll)="onSelectAll($event)"
+    (onDeSelectAll)="onDeSelectAll($event)">
+</angular2-multiselect>
+ 
+            </div>
+          </div>
+        </div>
+ 
+      </div>
+      <div class="row pt-2">
+ 
+        <div class="col-sm-6">
+          <div class="row">
+            <div class="col-sm-4 text-center">
+              <p class="pt-1" for="exampleInputEmail1">From Date:</p>
+            </div>
+            <div class="col-sm-1 pr-0"></div>
+            <div class="col-sm-7 pr-0 pl-0">
+              <input type="date" class="form-control" placeholder="From Date">
+            </div>
+ 
+          </div>
+ 
+        </div>
+        <div class="col-sm-6">
+          <div class="row">
+            <div class="col-sm-2 pr-1 text-center">
+              <p class="pt-1" for="exampleInputEmail1">To:</p>
+ 
+            </div>
+            <div class="col-sm-8 pl-0">
+              <input type="date" class="form-control" placeholder="To Date">
+              <!-- <i class="fa fa-calendar fa-2x" aria-hidden="true"></i> -->
+            </div>
+            <div class="col-sm-2"></div>
+          </div>
+ 
+        </div>
+ 
+      </div>
+      <div class="row pt-2">
+        <div class="col-sm-7">
+ 
+        </div>
+        <div class="col-sm-4 pl-0">
+          <!-- <div class="row pb-2"> -->
+          <!-- <div class="col-sm-6"> -->
+          <button type="button" class="btn btn-sm py-2">Search</button>
+          <!-- </div> -->
+          <!-- <div class="col-sm-6"> -->
+          <button type="button" class="btn btn-sm py-2">Reset</button>
+          <!-- </div> -->
+          <!-- </div> -->
+        </div>
+        <div class="col-sm-1">
+ 
+        </div>
+      </div>
+    </fieldset>
+
+    </div>
+    <div class="col-sm-5 border border-dark">
+      <!-- <h4 class="pt-1" style="color :#800080">Summary</h4> -->
+      <!-- <hr class="border-dark"> -->
+      <fieldset class="scheduler-border">
+          <legend class="scheduler-border"style="color:#800080">Summary</legend>
+      <nav class="navbar">
+        <input class="form-control" type="text" name="search" [(ngModel)]="filter">
+      </nav>
+      <table class="table">
+        <thead>
+ 
+          <tr>
+ 
+            <th (click)="sort('id')">Batch Id
+              <span class="fa fa-fw fa-sort" *ngIf="key =='id'" [ngClass]="{'fa-sort-asc':!reverse,'fa-sort-desc':reverse}"></span>
+            </th>
+ 
+            <th (click)="sort('matched')">Matched
+ 
+              <span class="fa fa-fw fa-sort" *ngIf="key =='matched'" [ngClass]="{'fa-sort-asc':!reverse,'fa-sort-desc':reverse}"></span>
+ 
+            </th>
+ 
+            <th (click)="sort('unmatched')">Unmatched
+ 
+              <span class="fa fa-fw fa-sort" *ngIf="key =='unmatched'" [ngClass]="{'fa-sort-asc':!reverse,'fa-sort-desc':reverse}"></span>
+ 
+            </th>
+ 
+          </tr>
+ 
+        </thead>
+        <tbody>
+          <tr *ngFor="let batch of batchs | orderBy: key : reverse | filter:filter | paginate: { itemsPerPage: 3, currentPage: pg }; let i = index">
+            <td>{{batch.id}}</td>
+            <td>{{batch.matched}}</td>
+            <td>{{batch.unmatched}}</td>
+          </tr>
+        </tbody>
+        <pagination-controls (pageChange)="pg = $event"></pagination-controls>
+      </table>
+ </fieldset>
+    </div>
+  </div>
+  <div class="row  mt-2 mr-1 ml-1">
+    <div class="col-sm-1">
+      <div class="row  mt-2 mr-1 ml-1">
+        <label style="color:#800080">All</label>
+        <input class="form-check-input" type="radio" name="search1" [(ngModel)]="filter" />
+ 
+      </div>
+    </div>
+    <div class="col-sm-1">
+      <div class="row  mt-2 mr-1 ml-1">
+        <label style="color:#800080">Unmatched</label>
+        <input class="form-check-input" type="radio" name="search1" value="difference" [(ngModel)]="filter">
+ 
+      </div>
+    </div>
+    <div class="col-sm-10"></div>
+  </div>
+ 
+  <div class="row pt-2">
+    <div class="col-sm-2">
+      <table class="table">
+        <thead>
+ 
+          <tr>
+ 
+            <th (click)="sortKey('keyid')" style="color:#800080">Key
+              <span class="fa fa-fw fa-sort" *ngIf="key1 =='keyid'" [ngClass]="{'fa-sort-asc':!reverse1,'fa-sort-desc':reverse1}"></span>
+            </th>
+
+
+          </tr>
+ 
+        </thead>
+        <tbody>
+          <tr *ngFor="let contact of contacts | orderBy: key1 : reverse1 | filter:filter | paginate: { itemsPerPage: 3, currentPage: pg }; let i = index">
+            <td>
+              <a href="#">
+                <span *ngIf="contact.matched=='difference'" class="priority-red"> {{contact.keyid}} </span>
+                <span *ngIf="contact.matched=='same'" class="priority-black   "> {{contact.keyid}} </span>
+              </a>
+            </td>
+ 
+          </tr>
+        </tbody>
+        <pagination-controls (pageChange)="pg = $event"></pagination-controls>
+      </table>
+ 
+    </div>
+ 
+    <div class="col-sm-10">
+     
+ 
+ 
+      <table class="table table-bordered table-fixed">
+        <thead>
+          <tr>
+            <th scope="col" style="color:#800080">Field Name</th>
+            <th scope="col" style="color:#800080">Generated data</th>
+            <th scope="col" style="color:#800080">Target data</th>
+ 
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td colspan="3" class="color_grey">
+              <a class="" data-toggle="collapse" href="#PersonDetails" role="button"  aria-expanded="true" aria-controls="collapseExample">
+                <i class="fa fa-minus-circle text-dark" aria-hidden="true"></i>
+              </a>Person Details
+            </td>
+ 
+          </tr>
+ 
+        </tbody>
+        <tbody class="collapse" id="PersonDetails">
+          <tr>
+            <th scope="row">First Name</th>
+            <td>xxx</td>
+            <td>xxx</td>
+          </tr>
+          <tr>
+            <th scope="row">Last Name</th>
+            <td>yyy</td>
+            <td>yyy</td>
+          </tr>
+          <tr>
+            <th scope="row">Middle Name</th>
+            <td>zzz</td>
+            <td>zzz</td>
+          </tr>
+ 
+        </tbody>
+        <tbody>
+          <tr>
+            <td colspan="3" class="color_grey">
+              <a class="" data-toggle="collapse" href="#AddressDetails" role="button" aria-expanded="true" aria-controls="collapseExample">
+                <i class="fa fa-plus-circle text-dark" aria-hidden="true"></i>
+              </a>Address Details
+            </td>
+ 
+          </tr>
+        </tbody>
+        <tbody class="collapse" id="AddressDetails">
+          <tr>
+            <th scope="row">Line</th>
+            <td>111 Remo Street</td>
+            <td>111 Remo Street</td>
+          </tr>
+          <tr>
+            <th scope="row">City</th>
+            <td>NewYork</td>
+            <td>California</td>
+          </tr>
+          <tr>
+            <th scope="row">State</th>
+            <td>USA</td>
+            <td>USA</td>
+          </tr>
+ 
+        </tbody>
+ 
+      </table>
+ 
+    </div>
+ 
+  </div>
+</div>
